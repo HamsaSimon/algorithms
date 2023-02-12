@@ -3,7 +3,7 @@
 int main()
 {
     // undirected edges
-    std::vector<Graph::Edge> edges = 
+    std::vector<Graph<char>::Edge> edges = 
     {
         {'g', 'd'}, {'g','h'} , {'d', 'h'},
         {'d', 'g'}, {'h', 'g'}, {'h', 'd'},
@@ -17,7 +17,7 @@ int main()
         {'l', 'k'}
     };
 
-    Graph graph(edges);
+    Graph<char> graph(edges);
     //printGraph(graph);
 
     graph.DFS();

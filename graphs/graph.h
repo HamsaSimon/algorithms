@@ -8,18 +8,18 @@
 #include <unordered_set>
 
 
-
+template<class T>
 class Graph
 {
 public:
 
     struct Edge
     {
-    char src, dest;
+    T src, dest;
     
     };
 
-    std::unordered_map<char, std::vector<char>> adjList_;
+    std::unordered_map<T, std::vector<T>> adjList_;
 
     // marks which nodes have been visited. True = visited, false = not visited
     std::map<char, bool> visited_;
@@ -31,14 +31,69 @@ public:
 
     void DFS();
 
-    void explore(char vertex);
+    void explore(T vertex);
 
-    void previst(char vertex);
+    void previst(T vertex);
     
-    void postvist(char vertex);
+    void postvist(T vertex);
 };
 
-inline void printGraph(Graph const &graph)
+template<class T>
+Graph<T>::Graph(std::vector<Edge> const &edges)
+{
+    // add edges to the directed graph
+    for (auto &edge: edges)
+    {
+        // insert at the end
+        adjList_[edge.src].push_back(edge.dest);
+        
+        // establish initial visited values for each node
+        visited_[edge.src] = false;
+    }
+}
+
+template<class T>
+void Graph<T>::DFS()
+{
+    // We check for nodes that have not been visited
+    for (auto const& x : visited_)
+    {
+        if (x.second == false)
+        {
+            explore(x.first);
+        }
+    }
+}
+
+
+template<class T>
+void Graph<T>::explore(T vertex)
+{
+    visited_[vertex] = true;
+    previst(vertex);
+
+    for(auto const& sourceNode : adjList_[vertex])
+    {
+        if(visited_[sourceNode] == false)
+        {
+            explore(sourceNode);
+        }
+    }
+    postvist(vertex);
+}
+template<class T>
+void Graph<T>::previst(T vertex)
+{
+    std::cout << "Pre visiting vertex: " << vertex << std::endl;
+}
+
+template<class T>
+void Graph<T>::postvist(T vertex)
+{
+    std::cout << "Post visting vertex: " << vertex << std::endl;
+}
+
+inline void printGraph(Graph<char> const &graph)
 {
     std::cout << "Printing out the graph \n";
     for(const auto& value : graph.adjList_)
