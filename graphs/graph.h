@@ -15,16 +15,18 @@ public:
 
     struct Edge
     {
-    T src, dest;
-    
+        T src, dest;
     };
 
     std::unordered_map<T, std::vector<T>> adjList_;
 
     // marks which nodes have been visited. True = visited, false = not visited
-    std::map<char, bool> visited_;
+    std::map<T, bool> visited_;
 
     //std::unordered_set<char> visited_;
+    
+    //Default constructor
+    Graph() {}
     
     // Graph Constructor
     Graph(std::vector<Edge> const &edges);
