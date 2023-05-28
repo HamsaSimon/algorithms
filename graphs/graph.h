@@ -16,14 +16,13 @@ public:
     struct Edge
     {
         T src, dest;
+        int preVisitNum, postVisitNum;
     };
 
     std::unordered_map<T, std::vector<T>> adjList_;
 
     // marks which nodes have been visited. True = visited, false = not visited
     std::map<T, bool> visited_;
-
-    //std::unordered_set<char> visited_;
     
     //Default constructor
     Graph() {}
@@ -38,7 +37,14 @@ public:
     void previst(T vertex);
     
     void postvist(T vertex);
+
+private:
+
+    static int currVisitNum;
 };
+
+template<class T>
+int Graph<T>::currVisitNum = 0;
 
 template<class T>
 Graph<T>::Graph(std::vector<Edge> const &edges)
@@ -83,6 +89,7 @@ void Graph<T>::explore(T vertex)
     }
     postvist(vertex);
 }
+
 template<class T>
 void Graph<T>::previst(T vertex)
 {
