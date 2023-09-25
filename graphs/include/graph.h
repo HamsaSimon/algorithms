@@ -32,6 +32,8 @@ public:
 
     void DFS();
 
+    void restartDFS();
+
     void explore(T vertex);
 
     void previst(T vertex);
@@ -42,6 +44,10 @@ public:
     void printPrePostVisits();
 
     void printGraph();
+
+    // Finds nodes that have not been visited yet
+    // Returns a vector of unvisited nodes
+    std::vector<T> findUnvisitedNodes();
 
 private:
 
@@ -61,8 +67,8 @@ private:
     std::unordered_map<T, std::vector<T>> adjList_;
 };
 
-    template<class T>
-    int Graph<T>::currVisitNum = 0;
+template<class T>
+int Graph<T>::currVisitNum = 0;
 
 template<class T>
 Graph<T>::Graph(std::vector<Edge> const &edges, T startingNode)
@@ -87,6 +93,21 @@ template<class T>
 void Graph<T>::DFS()
 {    
     explore(startingNode_);
+
+    // The code below is a mechanism for finding unvisted nodes
+    // and restarting our search if our graph is disconnected.
+    std::vector<T> unvisitedNodes = findUnvisitedNodes();
+    
+    if(unvisitedNodes.empty() == false)
+    {
+        for(auto const& unvisitedNode : unvisitedNodes)
+        {
+            explore(unvisitedNode);
+        }
+    }
+
+    // Clear the visit count tracker
+    currVisitNum = 0;
 }
 
 template<class T>
@@ -102,6 +123,7 @@ void Graph<T>::explore(T vertex)
             explore(sourceNode);
         }
     }
+
     postvist(vertex);
 }
 
@@ -147,6 +169,21 @@ void Graph<T>::printPrePostVisits()
         std::cout << "  " <<  node.first << "      " << node.second.preVisitNum << "      " << node.second.postVisitNum << std::endl;
     }
 
+}
+
+template<class T>
+std::vector<T> Graph<T>::findUnvisitedNodes()
+{
+    std::vector<T> resultVec;
+    for(const auto& node: visited_)
+    {
+        if(node.second == false)
+        {
+            resultVec.push_back(node.first);
+        }
+    }
+
+    return resultVec;
 }
 
 #endif //GRAPH_H 
