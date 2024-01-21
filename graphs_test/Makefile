@@ -10,6 +10,8 @@ IDIR=../graphs/include
 _DEPS=graph.h
 DEPS=$(patsubst %, $(IDIR)/%,$(_DEPS))
 
+TESTIDIR=../googletest/googletest/include/
+
 ODIR=obj
 SOURCE=./source
 
@@ -17,7 +19,7 @@ _OBJ=graphTest.o
 OBJ=$(patsubst %,$(ODIR)/%,$(_OBJ))
 LIBS=/usr/local/lib/libgtest.a
 
-CFLAGS=-I$(IDIR) -I$(LOCALIDIR) -Wall -pedantic -Werror -g
+CFLAGS= -std=c++14 -I$(IDIR) -I$(LOCALIDIR) -I$(TESTIDIR) -Wall -pedantic -g
 
 $(ODIR)/%.o: $(SOURCE)/%.cpp $(DEPS) $(LOCALDEPS) 
 	@mkdir -p $(ODIR)
